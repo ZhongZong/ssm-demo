@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 /**
  * @author situliang
  */
@@ -23,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Integer id) {
+        if (id < 1) {
+            throw new UserException(ResultEnum.PARAMETER_ERROR);
+        }
         try {
             User user = (User) redisCacheTemplate.opsForValue().get(PREFIX + "_" + id);
             if (user == null) {
@@ -36,10 +41,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Integer insertUser(User user) {
-        try{
+        try {
             return userDao.insertSelective(user);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new UserException(ResultEnum.UNKNOWN_ERROR);
         }
     }
