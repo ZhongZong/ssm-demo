@@ -26,4 +26,20 @@ public interface UserDao {
      */
     Integer insertSelective(User user);
 
+    /**
+     * 更新一个用户
+     *
+     * @param user 更新的用户，用户ID必须有值
+     * @return 影响行数
+     */
+    int updateUserById(User user);
+
+    /**
+     * 根据ID删除用户
+     *
+     * @param userId 删除用户ID
+     * @return 影响行数
+     */
+    int deleteUserById(Integer userId);
+
 }

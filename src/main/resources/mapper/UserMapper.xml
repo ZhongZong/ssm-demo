@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zzk.ssmdemo.dao.UserDao" >
     <resultMap id="BaseResultMap" type="com.zzk.ssmdemo.entity.User" >
         <id column="user_id" property="userId" jdbcType="INTEGER" />
@@ -16,24 +17,31 @@
         where user_id = #{id,jdbcType=INTEGER}
     </select>
 
-    <insert id="insertSelective" useGeneratedKeys="true" keyColumn="user_id" keyProperty="userId" parameterType="User" >
+    <insert id="insertSelective" useGeneratedKeys="true" keyColumn="user_id" keyProperty="userId"
+            parameterType="com.zzk.ssmdemo.entity.User" >
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="userId != null" >
-                userId,
-            </if>
             <if test="username != null" >
                 username,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="userId != null" >
-                #{userId,jdbcType=INTEGER},
-            </if>
             <if test="username != null" >
-                #{username,jdbcType=VARCHAR},
+                #{username},
             </if>
         </trim>
     </insert>
+
+    <update id="updateUserById" parameterType="com.zzk.ssmdemo.entity.User">
+        update user
+        <set>
+            <if test="username != null">username=#{username},</if>
+        </set>
+        where user_id=#{userId}
+    </update>
+    
+    <delete id="deleteUserById" parameterType="Integer">
+      DELETE FROM user WHERE user_id  = #{userId}
+    </delete>
 
 </mapper>
