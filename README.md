@@ -15,3 +15,13 @@
 - 删除用户URL(DELETE请求)->http://locahost:8080/user/user/deleteuser/用户ID(数字)
 - 更新用户URL(PUT请求)->http://locahost:8080/user/user/updateuser
 
+## 杂项
+- 数据表的SQL语句
+``` 
+CREATE TABLE `user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+```
+- Java环境使用的是JDK1.8
