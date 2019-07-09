@@ -48,9 +48,9 @@ spring:
 
 # 端口路径
 server:
-  port: 8080
+  port: 8090
   servlet:
-    context-path: /user
+    context-path: /weixin
 
 # mybatis配置
 mybatis:
@@ -60,4 +60,12 @@ mybatis:
     use-generated-keys: true
     use-column-label: true
     map-underscore-to-camel-case: true
+
+
+# 自定义参数信息
+weixin:
+  config:
+    appid: wxf476b45bff58a757
+    appsecret: a9d8d56b99fcfcd1980647243dfc51c5
+    token: situ
 
