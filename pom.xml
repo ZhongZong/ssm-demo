@@ -113,7 +113,12 @@
             <version>1.7.25</version>
         </dependency>
 
-
+        <!-- 处理微信的xml消息 -->
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
 
     </dependencies>
 
