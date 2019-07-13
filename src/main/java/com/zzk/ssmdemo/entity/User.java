@@ -1,6 +1,7 @@
 package com.zzk.ssmdemo.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author situliang
@@ -11,36 +12,82 @@ public class User implements Serializable {
     /**
      * 用户ID
      */
-    private Integer userId;
+    private Integer uid;
     /**
-     * 用户名
+     * 微信ID
      */
-    private String username;
+    private String openid;
+
+    /**
+     * 是否关注中
+     */
+    private Integer active;
+
+    /**
+     * 操作时间
+     */
+    private Date operateTime;
+
+    /**
+     * 天气预警的城市
+     */
+    private String city;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public Date getOperateTime() {
+        return operateTime;
+    }
+
+    public void setOperateTime(Date operateTime) {
+        this.operateTime = operateTime;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public User() {
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
-                ", username='" + username + '\'' +
+                "uid=" + uid +
+                ", openid='" + openid + '\'' +
+                ", active=" + active +
+                ", operateTime=" + operateTime +
+                ", city='" + city + '\'' +
                 '}';
     }
 }

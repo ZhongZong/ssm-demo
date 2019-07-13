@@ -1,4 +1,4 @@
-package com.zzk.ssmdemo.entity;
+package com.zzk.ssmdemo.common;
 
 public class Result<T> {
 

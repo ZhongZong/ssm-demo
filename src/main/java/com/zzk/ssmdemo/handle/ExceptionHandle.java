@@ -1,8 +1,8 @@
 package com.zzk.ssmdemo.handle;
 
-import com.zzk.ssmdemo.entity.Result;
+import com.zzk.ssmdemo.common.Result;
 import com.zzk.ssmdemo.enums.ResultEnum;
-import com.zzk.ssmdemo.exception.UserException;
+import com.zzk.ssmdemo.exception.CommonException;
 import com.zzk.ssmdemo.utils.ResultUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +21,8 @@ public class ExceptionHandle {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Result handle(Exception e) {
-        if (e instanceof UserException) {
-            UserException userException = (UserException) e;
+        if (e instanceof CommonException) {
+            CommonException userException = (CommonException) e;
             return ResultUtil.error(userException.getCode(), userException.getMessage());
         } else {
             logger.error("系统异常:{}", e);

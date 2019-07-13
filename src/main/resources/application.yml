@@ -2,7 +2,7 @@ spring:
   # 数据源
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ssm?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/weixin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false
     username: root
     password:
     # 连接池

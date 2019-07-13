@@ -1,6 +1,6 @@
 package com.zzk.ssmdemo.utils;
 
-import com.zzk.ssmdemo.entity.Result;
+import com.zzk.ssmdemo.common.Result;
 import com.zzk.ssmdemo.enums.ResultEnum;
 
 /**

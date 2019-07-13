@@ -3,7 +3,7 @@ package com.zzk.ssmdemo.service.impl;
 import com.zzk.ssmdemo.dao.UserDao;
 import com.zzk.ssmdemo.entity.User;
 import com.zzk.ssmdemo.enums.ResultEnum;
-import com.zzk.ssmdemo.exception.UserException;
+import com.zzk.ssmdemo.exception.CommonException;
 import com.zzk.ssmdemo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
     public User getUserById(Integer id) {
         if (id < 1) {
-            throw new UserException(ResultEnum.PARAMETER_ERROR);
+            throw new CommonException(ResultEnum.PARAMETER_ERROR);
         }
         try {
             User user = (User) redisCacheTemplate.opsForValue().get(PREFIX + "_" + id);
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
             }
             return user;
         } catch (Exception e) {
-            throw new UserException(ResultEnum.UNKNOWN_ERROR);
+            throw new CommonException(ResultEnum.UNKNOWN_ERROR);
         }
     }
 
@@ -51,11 +51,11 @@ public class UserServiceImpl implements UserService {
     public Integer insertUser(User user) {
         try {
             Integer effectNum = userDao.insertSelective(user);
-            logger.info("insert user id is:" + user.getUserId());
+            logger.info("新增用户,id is:" + user.getUid());
             return effectNum;
         } catch (Exception e) {
             logger.error(e.getMessage());
-            throw new UserException(ResultEnum.UNKNOWN_ERROR);
+            throw new CommonException(ResultEnum.UNKNOWN_ERROR);
         }
     }
 
@@ -65,11 +65,11 @@ public class UserServiceImpl implements UserService {
         try {
             Integer effectNum = userDao.updateUserById(user);
             if (effectNum > 0) {
-                redisCacheTemplate.delete(PREFIX + "_" + user.getUserId());
+                redisCacheTemplate.delete(PREFIX + "_" + user.getUid());
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
-            throw new UserException(ResultEnum.UNKNOWN_ERROR);
+            throw new CommonException(ResultEnum.UNKNOWN_ERROR);
         }
     }
 
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
-            throw new UserException(ResultEnum.UNKNOWN_ERROR);
+            throw new CommonException(ResultEnum.UNKNOWN_ERROR);
         }
     }
 

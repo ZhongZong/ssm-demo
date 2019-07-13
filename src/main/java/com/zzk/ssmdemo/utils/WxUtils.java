@@ -73,40 +73,21 @@ public class WxUtils {
     }
 
     /**
-     * 用户处理所有事件和消息的回复
+     * 用于处理所有事件和消息的回复
      *
      * @param requestMap 请求参数的map
      * @return 返回用户的xml消息
      */
-    public static String getResponse(Map<String, String> requestMap) {
+    /*public static String getResponse(Map<String, String> requestMap) {
         BaseMessage msg = null;
-        String msgType = requestMap.get("MsgType");
-        switch (msgType) {
-            case "text":
-                msg = delTextMessage(requestMap);
-                break;
-            case "image":
-                break;
-            case "voice":
-                break;
-            case "video":
-                break;
-            case "shortvideo":
-                break;
-            case "location":
-                break;
-            case "link":
-                break;
-            default:
-                break;
-        }
+
         //把消息对象处理为xml数据包
         if (msg != null) {
             return beanToXml(msg);
         } else {
             return null;
         }
-    }
+    }*/
 
     /**
      * 处理文本消息
@@ -114,16 +95,18 @@ public class WxUtils {
      * @param requestMap 请求消息的map对象
      * @return 文本消息对象
      */
-    private static BaseMessage delTextMessage(Map<String, String> requestMap) {
+    public static String delTextMessage(Map<String, String> requestMap) {
         String content = requestMap.get("Content");
         String reply;
         if (content.indexOf("天气") >= 0) {
+            //天气查询消息
             reply = JuheUtils.GetTodayTemperatureByCity(content.replace("天气", ""));
         } else {
+            //聊天机器人消息
             reply = JuheUtils.chat(content);
         }
         TextMessage tm = new TextMessage(requestMap, reply);
-        return tm;
+        return beanToXml(tm);
     }
 
     /**
@@ -143,5 +126,12 @@ public class WxUtils {
         stream.processAnnotations(VideoMessage.class);
         String xml = stream.toXML(message);
         return xml;
+    }
+
+    public static String delSubscribe(Map<String, String> requestMap) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("欢迎关注微信公众号").append("\n");
+        TextMessage textMessage = new TextMessage(requestMap, stringBuilder.toString());
+        return beanToXml(textMessage);
     }
 }

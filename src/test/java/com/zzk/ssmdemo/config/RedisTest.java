@@ -38,8 +38,8 @@ public class RedisTest {
         //String key = "user";
         String key1 = "user1";
         User user = new User();
-        user.setUsername("zzk123");
-        user.setUserId(123);
+        //user.setUsername("zzk123");
+        //user.setUserId(123);
         List<User> list = new ArrayList<>();
         list.add(user);
         //redisCacheTemplate.opsForValue().set(key, user, Duration.ofMinutes(1));
