@@ -115,7 +115,14 @@ public class WxUtils {
      * @return 文本消息对象
      */
     private static BaseMessage delTextMessage(Map<String, String> requestMap) {
-        TextMessage tm = new TextMessage(requestMap, "处理成功");
+        String content = requestMap.get("Content");
+        String reply;
+        if (content.indexOf("天气") >= 0) {
+            reply = JuheUtils.GetTodayTemperatureByCity(content.replace("天气", ""));
+        } else {
+            reply = JuheUtils.chat(content);
+        }
+        TextMessage tm = new TextMessage(requestMap, reply);
         return tm;
     }
 

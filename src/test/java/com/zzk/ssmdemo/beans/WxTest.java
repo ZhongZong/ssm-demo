@@ -1,6 +1,7 @@
 package com.zzk.ssmdemo.beans;
 
 import com.thoughtworks.xstream.XStream;
+import com.zzk.ssmdemo.utils.JuheUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,13 +31,26 @@ public class WxTest {
         //设置需要处理XStream注释的类
         XStream stream = new XStream();
         stream.processAnnotations(TextMessage.class);
-        stream.processAnnotations(ImageMessage.class);
+        /*stream.processAnnotations(ImageMessage.class);
         stream.processAnnotations(MusicMessage.class);
         stream.processAnnotations(NewsMessage.class);
         stream.processAnnotations(VoiceMessage.class);
-        stream.processAnnotations(VideoMessage.class);
+        stream.processAnnotations(VideoMessage.class);*/
         String xml = stream.toXML(textMessage);
         System.out.println(xml);
     }
+
+    @Test
+    public void testWeather(){
+        String re = JuheUtils.GetTodayTemperatureByCity("深圳");
+        System.out.println(re);
+    }
+
+    @Test
+    public void testChat(){
+        String re = JuheUtils.chat("你有女朋友吗?");
+        System.out.println(re);
+    }
+
 
 }

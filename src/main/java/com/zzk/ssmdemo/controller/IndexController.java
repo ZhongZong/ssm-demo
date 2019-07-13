@@ -71,12 +71,12 @@ public class IndexController {
             response.setCharacterEncoding("utf8");
             Map<String, String> requestMap = WxUtils.parseRequest(request.getInputStream());
             String respXml =  WxUtils.getResponse(requestMap);
-            log.info(respXml);
+            // log.info(respXml);
             PrintWriter out = response.getWriter();
             out.print(respXml);
             out.flush();
             out.close();
-            log.info("解析后的消息:{}", requestMap.toString());
+            //log.info("解析后的消息:{}", requestMap.toString());
         } catch (Exception e) {
             log.error("解析微信请求出现异常:{}", e.getMessage());
             throw new UserException(ResultEnum.PARAMETER_ERROR);
