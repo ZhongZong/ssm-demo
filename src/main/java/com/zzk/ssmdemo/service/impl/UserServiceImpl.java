@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.Map;
+
 
 /**
  * @author situliang
@@ -47,26 +50,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Integer countByOpenId(String openid) {
+        return userDao.countByOpenId(openid);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer insertUser(User user) {
+    public Integer insertUser(Map<String, String> requestUser) {
+        Integer effectNum;
         try {
-            Integer effectNum = userDao.insertSelective(user);
-            logger.info("新增用户,id is:" + user.getUid());
-            return effectNum;
+            User user = new User();
+            user.setOpenid(requestUser.get("FromUserName"));
+            user.setActive(1);
+            user.setOperateTime(new Date());
+            if (countByOpenId(user.getOpenid()) > 0) {
+                effectNum = userDao.updateUserByOpenId(user);
+            } else {
+                effectNum = userDao.insertSelective(user);
+            }
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw new CommonException(ResultEnum.UNKNOWN_ERROR);
         }
+        return effectNum;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateUser(User user) {
         try {
-            Integer effectNum = userDao.updateUserById(user);
-            if (effectNum > 0) {
-                redisCacheTemplate.delete(PREFIX + "_" + user.getUid());
-            }
+            userDao.updateUserById(user);
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw new CommonException(ResultEnum.UNKNOWN_ERROR);
@@ -75,12 +88,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteUser(Integer id) {
+    public void deleteUser(String openid) {
+        User user = new User();
+        user.setActive(0);
+        user.setOperateTime(new Date());
+        user.setOpenid(openid);
         try {
-            Integer effectNum = userDao.deleteUserById(id);
-            if (effectNum > 0) {
-                redisCacheTemplate.delete(PREFIX + "_" + id);
-            }
+            userDao.updateUserByOpenId(user);
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw new CommonException(ResultEnum.UNKNOWN_ERROR);

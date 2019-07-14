@@ -20,6 +20,12 @@
         where uid = #{id,jdbcType=INTEGER}
     </select>
 
+    <select id="countByOpenId" resultType="integer" parameterType="string">
+        SELECT COUNT(*)
+        FROM user
+        WHERE openid = #{openid}
+    </select>
+
     <insert id="insertSelective" useGeneratedKeys="true" keyColumn="uid" keyProperty="uid"
             parameterType="com.zzk.ssmdemo.entity.User" >
         insert into user
@@ -57,8 +63,20 @@
         update user
         <set>
             <if test="active != null">active=#{active},</if>
+            <if test="city != null">city=#{city},</if>
+            <if test="operateTime != null">operate_time=#{operateTime},</if>
         </set>
         where uid=#{userId}
+    </update>
+
+    <update id="updateUserByOpenId" parameterType="com.zzk.ssmdemo.entity.User">
+        update user
+        <set>
+            <if test="active != null">active=#{active},</if>
+            <if test="city != null">city=#{city},</if>
+            <if test="operateTime != null">operate_time=#{operateTime},</if>
+        </set>
+        where openid=#{openid}
     </update>
     
     <delete id="deleteUserById" parameterType="Integer">

@@ -2,6 +2,8 @@ package com.zzk.ssmdemo.service;
 
 import com.zzk.ssmdemo.entity.User;
 
+import java.util.Map;
+
 /**
  * @author situliang
  */
@@ -18,12 +20,20 @@ public interface UserService {
     User getUserById(Integer id);
 
     /**
+     * 查询是否存在指定微信openid的用户
+     *
+     * @param openid
+     * @return
+     */
+    Integer countByOpenId(String openid);
+
+    /**
      * 新增用户
      *
      * @param user 用户对象
      * @return 0:失败,1:成功
      */
-    Integer insertUser(User user);
+    Integer insertUser(Map<String,String> user);
 
     /**
      * 更新用户
@@ -35,7 +45,7 @@ public interface UserService {
     /**
      * 删除用户
      *
-     * @param id 用户ID
+     * @param id 用户的openid
      */
-    void deleteUser(Integer id);
+    void deleteUser(String id);
 }

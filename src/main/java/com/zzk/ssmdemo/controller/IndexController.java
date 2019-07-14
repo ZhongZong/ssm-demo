@@ -1,6 +1,5 @@
 package com.zzk.ssmdemo.controller;
 
-import com.zzk.ssmdemo.entity.User;
 import com.zzk.ssmdemo.enums.ResultEnum;
 import com.zzk.ssmdemo.exception.CommonException;
 import com.zzk.ssmdemo.service.UserService;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -118,14 +116,13 @@ public class IndexController {
             case "event":
                 String event = requestMap.get("Event");
                 if ("subscribe".equals(event)) {
-                    User user = new User();
-                    user.setOpenid(requestMap.get("FromUserName"));
-                    user.setOperateTime(new Date());
-                    userService.insertUser(user);
+                    // 新订阅的用户
+                    userService.insertUser(requestMap);
                     re = WxUtils.delSubscribe(requestMap);
                 }
                 if ("unsubscribe".equals(event)) {
-
+                    // 新取消订阅的用户
+                    userService.deleteUser(requestMap.get("FromUserName"));
                 }
                 break;
             default:

@@ -19,6 +19,13 @@ public interface UserDao {
     User selectByPrimaryKey(Integer id);
 
     /**
+     * 查询是否存在指定ID的用户
+     * @param openid
+     * @return
+     */
+    Integer countByOpenId(String openid);
+
+    /**
      * 新增一个用户
      *
      * @param user 用户
@@ -33,6 +40,14 @@ public interface UserDao {
      * @return 影响行数
      */
     int updateUserById(User user);
+
+    /**
+     * 根据用户微信的open更新一个用户
+     *
+     * @param user 用户
+     * @return 影响行数
+     */
+    int updateUserByOpenId(User user);
 
     /**
      * 根据ID删除用户
