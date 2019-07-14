@@ -2,6 +2,7 @@ package com.zzk.ssmdemo.utils;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Maps;
 import com.zzk.ssmdemo.beans.WeiXin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,7 @@ public class JuheUtils {
         String url = "http://v.juhe.cn/weather/index?cityname=" + city + "&key=" + WeiXin.getWeatherKey();
         String result = PureNetUtil.get(url);
         String weather;
-        Map<String, Object> map = new HashMap();
+        Map<String, Object> map = Maps.newHashMap();
         if (result != null) {
             try {
                 map = mapper.readValue(result, Map.class);

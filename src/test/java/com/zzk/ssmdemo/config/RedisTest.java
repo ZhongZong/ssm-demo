@@ -36,21 +36,21 @@ public class RedisTest {
 //        log.info("[字符缓存结果] - [{}]", k1);
         // TODO 以下只演示整合，具体Redis命令可以参考官方文档，Spring Data Redis 只是改了个名字而已，Redis支持的命令它都支持
         //String key = "user";
-        String key1 = "user1";
-        User user = new User();
+        //String key1 = "user1";
+        //User user = new User();
         //user.setUsername("zzk123");
         //user.setUserId(123);
-        List<User> list = new ArrayList<>();
-        list.add(user);
+        //List<User> list = new ArrayList<>();
+        //list.add(user);
         //redisCacheTemplate.opsForValue().set(key, user, Duration.ofMinutes(1));
-        String jsonString = null;
-        ObjectMapper mapper = new ObjectMapper();
+        //String jsonString = null;
+        //ObjectMapper mapper = new ObjectMapper();
 
-        redisCacheTemplate.opsForValue().set(key1, list, Duration.ofMinutes(1));
+        //redisCacheTemplate.opsForValue().set(key1, list, Duration.ofMinutes(1));
         //log.error("将对象转成json字符串失败:{}", e.getMessage());
 
         // TODO 对应 String（字符串）
-        final List<User> list1 = (List) redisCacheTemplate.opsForValue().get(key1 + "123");
-        log.info("[对象缓存结果] - [{}]", list1);
+        //final List<User> list1 = (List) redisCacheTemplate.opsForValue().get(key1 + "123");
+        //log.info("[对象缓存结果] - [{}]", list1);
     }
 }

@@ -1,5 +1,7 @@
 package com.zzk.ssmdemo.utils;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.XStream;
 import com.zzk.ssmdemo.beans.*;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -50,7 +52,7 @@ public class WxUtils {
      * @return 解析好的map对象
      */
     public static Map<String, String> parseRequest(InputStream inputStream) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = Maps.newHashMap();
         SAXReader reader = new SAXReader();
         try {
             // 读取输入流,获取文档对象
@@ -111,7 +113,7 @@ public class WxUtils {
     }
 
     public static String delTuWen(Map<String, String> requestMap){
-        List<Article> articles = new ArrayList<>();
+        List<Article> articles = Lists.newArrayList();
         Article article = new Article("这是图文消息的标题", "这是图文消息的介绍",
                 "https://mat1.gtimg.com/pingjs/ext2020/qqindex2018/dist/img/qq_logo_2x.png", "https://www.qq.com/");
         articles.add(article);
