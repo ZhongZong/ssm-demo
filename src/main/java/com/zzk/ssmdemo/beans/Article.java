@@ -1,5 +1,7 @@
 package com.zzk.ssmdemo.beans;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * @ClassName Article
  * @Description: 图文内容
@@ -8,14 +10,19 @@ package com.zzk.ssmdemo.beans;
  * @Version V1.0
  **/
 
+@XStreamAlias("item")
 public class Article {
 
+    @XStreamAlias("Title")
     private String title;
 
+    @XStreamAlias("Description")
     private String description;
 
+    @XStreamAlias("PicUrl")
     private String picUrl;
 
+    @XStreamAlias("Url")
     private String url;
 
     public String getTitle() {

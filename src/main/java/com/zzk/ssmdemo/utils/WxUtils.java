@@ -10,10 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName WxUtils
@@ -98,15 +95,41 @@ public class WxUtils {
     public static String delTextMessage(Map<String, String> requestMap) {
         String content = requestMap.get("Content");
         String reply;
-        if (content.indexOf("天气") >= 0) {
+        if (content.contains("天气")) {
             //天气查询消息
             reply = JuheUtils.GetTodayTemperatureByCity(content.replace("天气", ""));
+        } else if ("图文".equals(content)) {
+            //返回图文消息
+            reply = delTuWen(requestMap);
+            return reply;
         } else {
             //聊天机器人消息
             reply = JuheUtils.chat(content);
         }
         TextMessage tm = new TextMessage(requestMap, reply);
         return beanToXml(tm);
+    }
+
+    public static String delTuWen(Map<String, String> requestMap){
+        List<Article> articles = new ArrayList<>();
+        Article article = new Article("这是图文消息的标题", "这是图文消息的介绍",
+                "https://mat1.gtimg.com/pingjs/ext2020/qqindex2018/dist/img/qq_logo_2x.png", "https://www.qq.com/");
+        articles.add(article);
+        BaseMessage message = new NewsMessage(requestMap, articles);
+        return beanToXml(message);
+    }
+
+    /**
+     * 处理用户的订阅事件
+     *
+     * @param requestMap 请求的消息
+     * @return 返回的xml消息
+     */
+    public static String delSubscribe(Map<String, String> requestMap) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("欢迎关注微信公众号").append("\n");
+        TextMessage textMessage = new TextMessage(requestMap, stringBuilder.toString());
+        return beanToXml(textMessage);
     }
 
     /**
@@ -126,12 +149,5 @@ public class WxUtils {
         stream.processAnnotations(VideoMessage.class);
         String xml = stream.toXML(message);
         return xml;
-    }
-
-    public static String delSubscribe(Map<String, String> requestMap) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("欢迎关注微信公众号").append("\n");
-        TextMessage textMessage = new TextMessage(requestMap, stringBuilder.toString());
-        return beanToXml(textMessage);
     }
 }

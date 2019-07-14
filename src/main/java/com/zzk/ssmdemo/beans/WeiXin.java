@@ -16,36 +16,53 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "weixin.config")
 public class WeiXin {
 
-    private static  String appid;
+    private static String appid;
 
-    private static  String appsecret ;
+    private static String appsecret;
 
-    private static  String token;
+    private static String token;
 
-    public static String getAppid() {
-        return appid;
-    }
+    private static String weatherKey;
+
 
     @Value("${weixin.config.appid}")
     public void setAppid(String appid) {
         WeiXin.appid = appid;
     }
 
-    public static String getAppsecret() {
-        return appsecret;
+    public static String getAppid() {
+        return appid;
     }
+
 
     @Value("${weixin.config.appsecret}")
     public void setAppsecret(String appsecret) {
         WeiXin.appsecret = appsecret;
     }
 
-    public static String getToken() {
-        return token;
+    public static String getAppsecret() {
+        return appsecret;
     }
 
     @Value("${weixin.config.token}")
     public void setToken(String token) {
         WeiXin.token = token;
     }
+
+    public static String getToken() {
+        return token;
+    }
+
+
+
+    @Value("${weixin.config.weather-key}")
+    public void setWeatherKey(String weatherKey) {
+        WeiXin.weatherKey = weatherKey;
+    }
+
+    public static String getWeatherKey() {
+        return weatherKey;
+    }
+
 }
+

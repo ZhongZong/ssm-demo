@@ -68,4 +68,5 @@ weixin:
     appid: wxf476b45bff58a757
     appsecret: a9d8d56b99fcfcd1980647243dfc51c5
     token: situ
+    weather-key: 4dadcd44e79e174e8fcefb28e6c9499a
 

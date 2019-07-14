@@ -14,10 +14,12 @@ import java.util.Map;
  * @Version V1.0
  **/
 @XStreamAlias("xml")
-public class NewsMessage extends BaseMessage{
+public class NewsMessage extends BaseMessage {
 
+    @XStreamAlias("ArticleCount")
     private Integer articleCount;
 
+    @XStreamAlias("Articles")
     private List<Article> articles = new ArrayList<>();
 
     public Integer getArticleCount() {
@@ -36,11 +38,10 @@ public class NewsMessage extends BaseMessage{
         this.articles = articles;
     }
 
-    public NewsMessage(Map<String, String> requestMap,
-                       Integer articleCount, List<Article> articles) {
+    public NewsMessage(Map<String, String> requestMap, List<Article> articles) {
         super(requestMap);
         this.setMsgType("news");
-        this.articleCount = articleCount;
+        this.articleCount = articles.size();
         this.articles = articles;
     }
 }

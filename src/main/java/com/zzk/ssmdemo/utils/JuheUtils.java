@@ -2,6 +2,7 @@ package com.zzk.ssmdemo.utils;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zzk.ssmdemo.beans.WeiXin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,13 +20,11 @@ import java.util.Map;
 
 public class JuheUtils {
 
-    private static final String API_KEY = "4dadcd44e79e174e8fcefb28e6c9499a";
 
     private static final Logger log = LoggerFactory.getLogger(JuheUtils.class);
 
     /**
-     * 获取返回数据中的一个属性示例,此处以获取今日温度为例
-     * "temperature": "8℃~20℃"     今日温度
+     * 根据城市获取天气数据
      *
      * @param city 城市名
      * @return 消息
@@ -33,7 +32,7 @@ public class JuheUtils {
     public static String GetTodayTemperatureByCity(String city) {
         ObjectMapper mapper = new ObjectMapper();
         // 此处以返回json格式数据示例,所以format=2,以根据城市名称为例,cityName传入中文
-        String url = "http://v.juhe.cn/weather/index?cityname=" + city + "&key=" + API_KEY;
+        String url = "http://v.juhe.cn/weather/index?cityname=" + city + "&key=" + WeiXin.getWeatherKey();
         String result = PureNetUtil.get(url);
         String weather;
         Map<String, Object> map = new HashMap();
