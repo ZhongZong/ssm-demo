@@ -2,7 +2,7 @@ package com.zzk.ssmdemo.controller;
 
 import com.zzk.ssmdemo.enums.ResultEnum;
 import com.zzk.ssmdemo.exception.CommonException;
-import com.zzk.ssmdemo.service.UserService;
+import com.zzk.ssmdemo.service.EventService;
 import com.zzk.ssmdemo.utils.WxUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class IndexController {
     private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
-    private UserService userService;
+    private EventService eventService;
 
     /**
      * 入口方法
@@ -114,16 +114,8 @@ public class IndexController {
             case "link":
                 break;
             case "event":
-                String event = requestMap.get("Event");
-                if ("subscribe".equals(event)) {
-                    // 新订阅的用户
-                    userService.insertUser(requestMap);
-                    re = WxUtils.delSubscribe(requestMap);
-                }
-                if ("unsubscribe".equals(event)) {
-                    // 新取消订阅的用户
-                    userService.deleteUser(requestMap.get("FromUserName"));
-                }
+                //接收事件推送
+                re = eventService.delEvent(requestMap);
                 break;
             default:
                 break;

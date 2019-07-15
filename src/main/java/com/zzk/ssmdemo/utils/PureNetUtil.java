@@ -1,8 +1,12 @@
 package com.zzk.ssmdemo.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Map;
 
 /**
@@ -14,6 +18,11 @@ import java.util.Map;
  **/
 
 public class PureNetUtil {
+
+    /**
+     * 日志打印
+     */
+    private static final Logger log = LoggerFactory.getLogger(PureNetUtil.class);
 
     /**
      * get方法直接调用post方法
@@ -38,7 +47,8 @@ public class PureNetUtil {
             URL u = new URL(url);
             conn = (HttpURLConnection) u.openConnection();
             StringBuffer sb = null;
-            if (param != null) {// 如果请求参数不为空
+            if (param != null) {
+                // 如果请求参数不为空
                 sb = new StringBuffer();
                 /*
                  * A URL connection can be used for input and/or output. Set the
@@ -88,12 +98,47 @@ public class PureNetUtil {
                         sb.toString().length() - System.getProperty("line.separator").length());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("调用远程Post接口出现异常,异常信息:{}", e.getLocalizedMessage());
             return null;
         } finally {
-            if (conn != null) {// 关闭连接
+            if (conn != null) {
+                // 关闭连接
                 conn.disconnect();
             }
+        }
+        return null;
+    }
+
+    /**
+     * 使用post json数据的方式调用远程的接口
+     *
+     * @param url  远程接口地址
+     * @param data 请求的json字符串
+     * @return 返回的数据
+     */
+    public static String postJson(String url, String data) {
+        try {
+            URL urlObject = new URL(url);
+            URLConnection connection = urlObject.openConnection();
+            //要发送数据出去,必须要设置为可发送数据状态
+            connection.setDoOutput(true);
+            //获取输出流
+            OutputStream os = connection.getOutputStream();
+            //写出数据
+            os.write(data.getBytes());
+            os.close();
+            //获取输入流
+            InputStream inputStream = connection.getInputStream();
+            byte[] b = new byte[1024];
+            int len;
+            StringBuilder stringBuilder = new StringBuilder();
+            while ((len = inputStream.read(b)) != -1) {
+                stringBuilder.append(new String(b, 0, len));
+            }
+            return stringBuilder.toString();
+        } catch (Exception e) {
+            log.error("调用远程postJson接口出现异常,异常信息:{}", e.getLocalizedMessage());
+            e.printStackTrace();
         }
         return null;
     }

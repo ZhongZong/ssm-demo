@@ -112,7 +112,7 @@ public class WxUtils {
         return beanToXml(tm);
     }
 
-    public static String delTuWen(Map<String, String> requestMap){
+    public static String delTuWen(Map<String, String> requestMap) {
         List<Article> articles = Lists.newArrayList();
         Article article = new Article("这是图文消息的标题", "这是图文消息的介绍",
                 "https://mat1.gtimg.com/pingjs/ext2020/qqindex2018/dist/img/qq_logo_2x.png", "https://www.qq.com/");
@@ -132,6 +132,28 @@ public class WxUtils {
         stringBuilder.append("欢迎关注微信公众号").append("\n");
         TextMessage textMessage = new TextMessage(requestMap, stringBuilder.toString());
         return beanToXml(textMessage);
+    }
+
+    /**
+     * 处理click菜单点击事件
+     *
+     * @param requestMap 请求参数
+     * @return 返回给用户的xml消息
+     */
+    public static String delClick(Map<String, String> requestMap) {
+        String key = requestMap.get("EventKey");
+        switch (key) {
+            case "1":
+                // 点击了一级菜单
+                return beanToXml(new TextMessage(requestMap,"你点击了第一个一级菜单"));
+            case "32":
+                // 点击了第三个一级菜单的第二个子菜单
+                return beanToXml(new TextMessage(requestMap,
+                        "你点击了第三个一级菜单的第二个子菜单"));
+            default:
+                break;
+        }
+        return null;
     }
 
     /**
