@@ -55,4 +55,24 @@ public class MenuServiceImpl implements MenuService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void setIndustry() {
+        String url = "https://api.weixin.qq.com/cgi-bin/template/api_set_industry?access_token="
+                + accessTokenService.getAccessToken();
+        String data = "{\n" +
+                "    \"industry_id1\":\"1\",\n" +
+                "    \"industry_id2\":\"2\"\n" +
+                "}";
+        String result = PureNetUtil.postJson(url, data);
+        log.info("设置微信公众号所属行业:{},返回结果:{}", data, result);
+    }
+
+    @Override
+    public String getIndustry() {
+        String url = "https://api.weixin.qq.com/cgi-bin/template/get_industry?access_token="
+                + accessTokenService.getAccessToken();
+        String result = PureNetUtil.get(url);
+        return result;
+    }
 }

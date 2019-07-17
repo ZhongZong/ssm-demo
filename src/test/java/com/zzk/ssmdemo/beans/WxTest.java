@@ -1,16 +1,16 @@
 package com.zzk.ssmdemo.beans;
 
-import com.baidu.aip.contentcensor.AipContentCensor;
-import com.baidu.aip.contentcensor.EImgType;
 import com.baidu.aip.ocr.AipOcr;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.xstream.XStream;
+import com.zzk.ssmdemo.service.MenuService;
 import com.zzk.ssmdemo.utils.BdSdkUtil;
 import com.zzk.ssmdemo.utils.JuheUtils;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -29,6 +29,9 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class WxTest {
+
+    @Autowired
+    private MenuService menuService;
 
     @Test
     public void testMsg() {
@@ -132,4 +135,14 @@ public class WxTest {
         System.out.println(res);
     }
 
+    @Test
+    public void setIndustry() {
+        menuService.setIndustry();
+    }
+
+    @Test
+    public void getIndustry() {
+        String re = menuService.getIndustry();
+        System.out.println(re);
+    }
 }

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 
@@ -47,6 +48,11 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             throw new CommonException(ResultEnum.UNKNOWN_ERROR);
         }
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return userDao.getAllUser();
     }
 
     @Override

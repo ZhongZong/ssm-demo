@@ -4,7 +4,7 @@
     <!-- TRACE<DEBUG<INFO<WARN<ERROR -->
     <property name="log.level" value="debug" />
     <property name="log.maxHistory" value="30" />
-    <property name="log.filePath" value="${catalina.base}/logs/permission"/>
+    <property name="log.filePath" value="./target/logs/wx"/>
 
     <!--<property name="log.filePath" value="${catalina.base}/logs/webapps" />-->
     <property name="log.pattern"

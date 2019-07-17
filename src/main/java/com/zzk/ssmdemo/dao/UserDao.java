@@ -3,6 +3,8 @@ package com.zzk.ssmdemo.dao;
 import com.zzk.ssmdemo.entity.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author situliang
  */
@@ -19,7 +21,15 @@ public interface UserDao {
     User selectByPrimaryKey(Integer id);
 
     /**
+     * 获取所有的关注用户
+     *
+     * @return 关注用户列表
+     */
+    List<User> getAllUser();
+
+    /**
      * 查询是否存在指定ID的用户
+     *
      * @param openid
      * @return
      */

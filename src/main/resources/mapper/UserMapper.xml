@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zzk.ssmdemo.dao.UserDao" >
-    <resultMap id="BaseResultMap" type="com.zzk.ssmdemo.entity.User" >
-        <id column="uid" property="uid" jdbcType="INTEGER" />
-        <result column="openid" property="openid" jdbcType="VARCHAR" />
-        <result column="active" property="active" jdbcType="INTEGER" />
-        <result column="city" property="city" jdbcType="VARCHAR" />
-        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP" />
+<mapper namespace="com.zzk.ssmdemo.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.zzk.ssmdemo.entity.User">
+        <id column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="openid" property="openid" jdbcType="VARCHAR"/>
+        <result column="active" property="active" jdbcType="INTEGER"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
-    <sql id="Base_Column_List" >
+    <sql id="Base_Column_List">
         uid, openid, active, city, operate_time
     </sql>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from user
         where uid = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getAllUser" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user
+        WHERE active = 1;
     </select>
 
     <select id="countByOpenId" resultType="integer" parameterType="string">
@@ -27,33 +34,33 @@
     </select>
 
     <insert id="insertSelective" useGeneratedKeys="true" keyColumn="uid" keyProperty="uid"
-            parameterType="com.zzk.ssmdemo.entity.User" >
+            parameterType="com.zzk.ssmdemo.entity.User">
         insert into user
-        <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="openid != null" >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="openid != null">
                 openid,
             </if>
-            <if test="active != null" >
+            <if test="active != null">
                 active,
             </if>
-            <if test="city != null" >
+            <if test="city != null">
                 city,
             </if>
-            <if test="operateTime != null" >
+            <if test="operateTime != null">
                 operate_time,
             </if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="openid != null" >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="openid != null">
                 #{openid},
             </if>
-            <if test="active != null" >
+            <if test="active != null">
                 #{active},
             </if>
-            <if test="city != null" >
+            <if test="city != null">
                 #{city},
             </if>
-            <if test="operateTime != null" >
+            <if test="operateTime != null">
                 #{operateTime},
             </if>
         </trim>
@@ -78,7 +85,7 @@
         </set>
         where openid=#{openid}
     </update>
-    
+
     <delete id="deleteUserById" parameterType="Integer">
       DELETE FROM user WHERE uid  = #{userId}
     </delete>
