@@ -1,5 +1,8 @@
 package com.zzk.ssmdemo.utils;
 
+import com.baidu.aip.imageclassify.AipImageClassify;
+import com.baidu.aip.ocr.AipOcr;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.XStream;
@@ -8,9 +11,11 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -25,6 +30,8 @@ import java.util.*;
 public class WxUtils {
 
     private static final Logger log = LoggerFactory.getLogger(WxUtils.class);
+
+    private static ObjectMapper mapper = new ObjectMapper();
 
     /**
      * 验证签名
@@ -70,23 +77,6 @@ public class WxUtils {
         }
         return map;
     }
-
-    /**
-     * 用于处理所有事件和消息的回复
-     *
-     * @param requestMap 请求参数的map
-     * @return 返回用户的xml消息
-     */
-    /*public static String getResponse(Map<String, String> requestMap) {
-        BaseMessage msg = null;
-
-        //把消息对象处理为xml数据包
-        if (msg != null) {
-            return beanToXml(msg);
-        } else {
-            return null;
-        }
-    }*/
 
     /**
      * 处理文本消息
@@ -145,7 +135,7 @@ public class WxUtils {
         switch (key) {
             case "1":
                 // 点击了一级菜单
-                return beanToXml(new TextMessage(requestMap,"你点击了第一个一级菜单"));
+                return beanToXml(new TextMessage(requestMap, "你点击了第一个一级菜单"));
             case "32":
                 // 点击了第三个一级菜单的第二个子菜单
                 return beanToXml(new TextMessage(requestMap,
@@ -154,6 +144,91 @@ public class WxUtils {
                 break;
         }
         return null;
+    }
+
+
+    /**
+     * 进行图片识别,识别图片中的文字
+     * <p>
+     * {
+     * "log_id": 2471272194,
+     * "words_result_num": 2,
+     * "words_result":
+     * [
+     * {"words": " TSINGTAO"},
+     * {"words": "青島睥酒"}
+     * ]
+     * }
+     *
+     * @param requestMap 请求参数
+     * @return 返回的xml数据
+     */
+    public static String delImage(Map<String, String> requestMap) {
+        // 设置图片地址
+        String path = requestMap.get("PicUrl");
+        // 调用接口
+        //本地图片识别
+        // JSONObject res = client.basicGeneral(path, new HashMap<String, String>());
+        // 网络图片识别
+        String res = BdSdkUtil.basicGeneralUrl(path);
+        log.info("百度AI识别图片文字结果:{}", res);
+        StringBuilder sb = new StringBuilder();
+        try {
+            Map<String, Object> resMap = mapper.readValue(res, Map.class);
+            List<Map<String, String>> wordsResult = (List<Map<String, String>>) resMap.get("words_result");
+            for (Map<String, String> entry : wordsResult) {
+                sb.append(entry.get("words")).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return beanToXml(new TextMessage(requestMap, sb.toString()));
+    }
+
+    /**
+     * 图片识别, 识别图片是否违规
+     *
+     * @param requestMap 请求参数
+     * @return xml格式的消息
+     */
+    public static String delImageDetect(Map<String, String> requestMap) {
+        String url = requestMap.get("PicUrl");
+        //String path = "C:\\Users\\situliang\\Desktop\\2.png";
+        // 调用接口
+        String res = BdSdkUtil.imageCensorUserDefined(url);
+        log.info("百度AI审核图片结果:{}", res);
+        StringBuilder sb = new StringBuilder();
+        try {
+            Map<String, Object> resMap = mapper.readValue(res, Map.class);
+            if (requestMap.containsKey("error_msg")) {
+                //调用接口出现错误
+                return beanToXml(new TextMessage(requestMap, requestMap.get("error_msg")));
+            }
+            sb.append("图片审核结果:").append(resMap.get("conclusion")).append("\n");
+            if (resMap.containsKey("data")) {
+                sb.append("图片分析结果如下:").append("\n");
+                List<Map<String, Object>> datas = (List<Map<String, Object>>) resMap.get("data");
+                for (Map<String, Object> entry : datas) {
+                    sb.append(entry.get("msg")).append("->");
+                    if (entry.containsKey("probability")) {
+                        sb.append("相似度:").append(entry.get("probability"));
+                    }
+                    if (entry.containsKey("stars")) {
+                        List<Map<String, String>> stars = (List<Map<String, String>>) entry.get("stars");
+                        for (Map star : stars) {
+                            sb.append("名称:").append(star.get("name")).append(",");
+                            sb.append("相似度:").append(star.get("probability")).append("。");
+                        }
+                    }
+                    sb.append("\n");
+                }
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return beanToXml(new TextMessage(requestMap, sb.toString()));
     }
 
     /**
@@ -174,4 +249,5 @@ public class WxUtils {
         String xml = stream.toXML(message);
         return xml;
     }
+
 }

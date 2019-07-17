@@ -1,15 +1,22 @@
 package com.zzk.ssmdemo.beans;
 
+import com.baidu.aip.contentcensor.AipContentCensor;
+import com.baidu.aip.contentcensor.EImgType;
+import com.baidu.aip.ocr.AipOcr;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.xstream.XStream;
+import com.zzk.ssmdemo.utils.BdSdkUtil;
 import com.zzk.ssmdemo.utils.JuheUtils;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -78,6 +85,51 @@ public class WxTest {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testPic() throws Exception {
+        String APP_ID = WeiXin.getBaiduAppId();
+        String API_KEY = WeiXin.getBaiduAppKey();
+        String SECRET_KEY = WeiXin.getBaiduSecretKey();
+        // 初始化一个AipOcr
+        AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+
+        // 可选：设置网络连接参数
+        client.setConnectionTimeoutInMillis(2000);
+        client.setSocketTimeoutInMillis(60000);
+
+        // 可选：设置代理服务器地址, http和socket二选一，或者均不设置
+        //client.setHttpProxy("proxy_host", proxy_port);  // 设置http代理
+        //client.setSocketProxy("proxy_host", proxy_port);  // 设置socket代理
+
+        // 可选：设置log4j日志输出格式，若不设置，则使用默认配置
+        // 也可以直接通过jvm启动参数设置此环境变量
+        //System.setProperty("aip.log4j.conf", "path/to/your/log4j.properties");
+
+        // 调用接口
+        String path = "C:\\Users\\situliang\\Desktop\\2.png";
+        JSONObject res = client.basicGeneral(path, new HashMap<String, String>());
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            Map<String, Object> resMap = mapper.readValue(res.toString(), Map.class);
+            List<Map<String, String>> wordsResult = (List<Map<String, String>>) resMap.get("words_result");
+            for (Map<String, String> entry : wordsResult) {
+                System.out.println(entry.get("words"));
+            }
+//            System.out.println(wordsResult);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        System.out.println(res.toString());
+
+    }
+
+    @Test
+    public void picDetect() throws Exception {
+        String path = "http://www.xinhuanet.com/world/2018-07/24/1123166562_15323820122421n.jpg";
+        String res = BdSdkUtil.imageCensorUserDefined(path);
+        System.out.println(res);
     }
 
 }

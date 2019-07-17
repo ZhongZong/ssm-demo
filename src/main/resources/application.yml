@@ -69,4 +69,11 @@ weixin:
     appsecret: a9d8d56b99fcfcd1980647243dfc51c5
     token: situ
     weather-key: 4dadcd44e79e174e8fcefb28e6c9499a
+    baidu-image-word-appid: 16811712
+    baidu-image-word-appkey: CSyc8SQScBuArsVYl7BGfreo
+    baidu-image-word-secretkey: G24z1AI3PYPLzN1NKIsv2C7gYWw0d4sR
+    baidu-image-detect-appid: 16819439
+    baidu-image-detect-apikey: XGKO8mV7ooIcUwVsg6WG3fDq
+    baidu-image-detect-secretkey: b71sxMxHK3CHLQsdYuYg0tXIkburqMOo
+
 

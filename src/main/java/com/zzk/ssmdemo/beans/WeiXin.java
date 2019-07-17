@@ -24,6 +24,17 @@ public class WeiXin {
 
     private static String weatherKey;
 
+    private static String baiduAppId;
+
+    private static String baiduAppKey;
+
+    private static String baiduSecretKey;
+
+    private static String bdImageDetectAppId;
+
+    private static String bdImageDetectAppKey;
+
+    private static String bdImageDetectSecretKey;
 
     @Value("${weixin.config.appid}")
     public void setAppid(String appid) {
@@ -54,7 +65,6 @@ public class WeiXin {
     }
 
 
-
     @Value("${weixin.config.weather-key}")
     public void setWeatherKey(String weatherKey) {
         WeiXin.weatherKey = weatherKey;
@@ -64,5 +74,58 @@ public class WeiXin {
         return weatherKey;
     }
 
+    public static String getBaiduAppId() {
+        return baiduAppId;
+    }
+
+    @Value("${weixin.config.baidu-image-word-appid}")
+    public void setBaiduAppId(String baiduAppId) {
+        WeiXin.baiduAppId = baiduAppId;
+    }
+
+    public static String getBaiduAppKey() {
+        return baiduAppKey;
+    }
+
+    @Value("${weixin.config.baidu-image-word-appkey}")
+    public void setBaiduAppKey(String baiduAppKey) {
+        WeiXin.baiduAppKey = baiduAppKey;
+    }
+
+    public static String getBaiduSecretKey() {
+        return baiduSecretKey;
+    }
+
+    @Value("${weixin.config.baidu-image-word-secretkey}")
+    public void setBaiduSecretKey(String baiduSecretKey) {
+        WeiXin.baiduSecretKey = baiduSecretKey;
+    }
+
+    public static String getBdImageDetectAppId() {
+        return bdImageDetectAppId;
+    }
+
+    @Value("${weixin.config.baidu-image-detect-appid}")
+    public void setBdImageDetectAppId(String bdImageDetectAppId) {
+        WeiXin.bdImageDetectAppId = bdImageDetectAppId;
+    }
+
+    public static String getBdImageDetectAppKey() {
+        return bdImageDetectAppKey;
+    }
+
+    @Value("${weixin.config.baidu-image-detect-apikey}")
+    public void setBdImageDetectAppKey(String bdImageDetectAppKey) {
+        WeiXin.bdImageDetectAppKey = bdImageDetectAppKey;
+    }
+
+    public static String getBdImageDetectSecretKey() {
+        return bdImageDetectSecretKey;
+    }
+
+    @Value("${weixin.config.baidu-image-detect-secretkey}")
+    public void setBdImageDetectSecretKey(String bdImageDetectSecretKey) {
+        WeiXin.bdImageDetectSecretKey = bdImageDetectSecretKey;
+    }
 }
 

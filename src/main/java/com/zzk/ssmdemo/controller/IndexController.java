@@ -102,6 +102,7 @@ public class IndexController {
                 re = WxUtils.delTextMessage(requestMap);
                 break;
             case "image":
+                re = WxUtils.delImageDetect(requestMap);
                 break;
             case "voice":
                 break;
@@ -120,7 +121,6 @@ public class IndexController {
             default:
                 break;
         }
-
         return re;
     }
 

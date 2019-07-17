@@ -27,6 +27,8 @@ public class MenuServiceImpl implements MenuService {
     @Autowired
     private AccessTokenService accessTokenService;
 
+    private ObjectMapper mapper = new ObjectMapper();
+
     @Override
     public void addMenu() {
         Button button = new Button();
@@ -43,7 +45,6 @@ public class MenuServiceImpl implements MenuService {
         // 第三个子菜单
         subButton.getSub_button().add(new ViewButton("百度", "http://www.baidu.com"));
         button.getButton().add(subButton);
-        ObjectMapper mapper = new ObjectMapper();
         try {
             String value = mapper.writeValueAsString(button);
             String url = " https://api.weixin.qq.com/cgi-bin/menu/create?access_token="

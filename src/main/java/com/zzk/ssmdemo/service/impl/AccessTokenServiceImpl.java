@@ -30,6 +30,8 @@ public class AccessTokenServiceImpl implements AccessTokenService {
     @Autowired
     private RedisTemplate redisCacheTemplate;
 
+    private ObjectMapper mapper = new ObjectMapper();
+
     @Override
     public String getAccessToken() {
         String token = (String) redisCacheTemplate.opsForValue().get(PREFIX);
@@ -38,7 +40,6 @@ public class AccessTokenServiceImpl implements AccessTokenService {
             String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" +
                     WeiXin.getAppid() + "&secret=" + WeiXin.getAppsecret();
             String response = PureNetUtil.get(url);
-            ObjectMapper mapper = new ObjectMapper();
             try {
                 Map<String, String> map = mapper.readValue(response, Map.class);
                 if (map.containsKey("access_token")) {

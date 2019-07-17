@@ -24,6 +24,8 @@ public class JuheUtils {
 
     private static final Logger log = LoggerFactory.getLogger(JuheUtils.class);
 
+    private static final ObjectMapper mapper = new ObjectMapper();
+
     /**
      * 根据城市获取天气数据
      *
@@ -31,7 +33,6 @@ public class JuheUtils {
      * @return 消息
      */
     public static String GetTodayTemperatureByCity(String city) {
-        ObjectMapper mapper = new ObjectMapper();
         // 此处以返回json格式数据示例,所以format=2,以根据城市名称为例,cityName传入中文
         String url = "http://v.juhe.cn/weather/index?cityname=" + city + "&key=" + WeiXin.getWeatherKey();
         String result = PureNetUtil.get(url);
@@ -72,7 +73,6 @@ public class JuheUtils {
      * @return 机器人回复的内容
      */
     public static String chat(String key) {
-        ObjectMapper mapper = new ObjectMapper();
         //如果传入的是空格
         if (key == null || "".equals(key.trim())) {
             key = "?";

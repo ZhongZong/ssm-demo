@@ -1,6 +1,5 @@
 package com.zzk.ssmdemo.service.impl;
 
-import com.zzk.ssmdemo.beans.BaseMessage;
 import com.zzk.ssmdemo.service.EventService;
 import com.zzk.ssmdemo.service.UserService;
 import com.zzk.ssmdemo.utils.WxUtils;
