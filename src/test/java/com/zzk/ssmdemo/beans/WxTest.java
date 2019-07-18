@@ -38,6 +38,8 @@ public class WxTest {
     @Autowired
     private AccessTokenService accessTokenService;
 
+    private ObjectMapper mapper = new ObjectMapper();
+
     @Test
     public void testMsg() {
         Map<String, String> requestMap = new HashMap<>();
@@ -152,14 +154,30 @@ public class WxTest {
     }
 
     @Test
-    public void testUpload(){
-       //新增临时素材的url
+    public void testUpload() {
+        //新增临时素材的url
         String url = " https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";
         url = url.replace("ACCESS_TOKEN", accessTokenService.getAccessToken())
                 .replace("TYPE", "image");
         String path = "C:\\Users\\situliang\\Desktop\\2.png";
         String res = PureNetUtil.upload(url, path);
         System.out.println(res);
+    }
+
+    @Test
+    public void getQrCodeTicket() {
+        String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="
+                + accessTokenService.getAccessToken();
+        String data = "{\"expire_seconds\":600,\"action_name\":\"QR_STR_SCENE\"," +
+                "\"action_info\":{\"scene\":{\"scene_str\":\"situ\"}}}";
+        String result = PureNetUtil.postJson(url, data);
+        try {
+            Map<String, String> map = mapper.readValue(result, Map.class);
+            String ticket = map.get("ticket");
+            System.out.println(map);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

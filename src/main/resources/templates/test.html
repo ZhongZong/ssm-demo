@@ -6,8 +6,26 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Test</title>
+    <!--gQET8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyZGZMMlVrd0Jla0QxYzhDTE50Y0gAAgSw4y9dAwRYAgAA-->
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+            crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("button").click(function () {
+                var url = "/weixin/getticket";
+                $.get(url,function (ticket) {
+                    var src = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + ticket;
+                    $("img").attr("src", src);
+                })
+            });
+        })
+    </script>
+
 </head>
 <body>
     <h1>这个是SpringBoot的测试页</h1>
+    <button>点击生成二维码</button>
+    <img src="" alt="">
 </body>
 </html>
