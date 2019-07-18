@@ -4,9 +4,11 @@ import com.baidu.aip.ocr.AipOcr;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.xstream.XStream;
+import com.zzk.ssmdemo.service.AccessTokenService;
 import com.zzk.ssmdemo.service.MenuService;
 import com.zzk.ssmdemo.utils.BdSdkUtil;
 import com.zzk.ssmdemo.utils.JuheUtils;
+import com.zzk.ssmdemo.utils.PureNetUtil;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +34,9 @@ public class WxTest {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private AccessTokenService accessTokenService;
 
     @Test
     public void testMsg() {
@@ -145,4 +150,16 @@ public class WxTest {
         String re = menuService.getIndustry();
         System.out.println(re);
     }
+
+    @Test
+    public void testUpload(){
+       //新增临时素材的url
+        String url = " https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";
+        url = url.replace("ACCESS_TOKEN", accessTokenService.getAccessToken())
+                .replace("TYPE", "image");
+        String path = "C:\\Users\\situliang\\Desktop\\2.png";
+        String res = PureNetUtil.upload(url, path);
+        System.out.println(res);
+    }
+
 }

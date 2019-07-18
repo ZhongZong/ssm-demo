@@ -3,6 +3,7 @@ package com.zzk.ssmdemo.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -129,17 +130,87 @@ public class PureNetUtil {
             os.close();
             //获取输入流
             InputStream inputStream = connection.getInputStream();
-            byte[] b = new byte[1024];
-            int len;
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((len = inputStream.read(b)) != -1) {
-                stringBuilder.append(new String(b, 0, len));
-            }
-            return stringBuilder.toString();
+            return getInputStream(inputStream);
         } catch (Exception e) {
             log.error("调用远程postJson接口出现异常,异常信息:{}", e.getLocalizedMessage());
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 新增素材到微信服务器
+     *
+     * @param url
+     * @param path
+     * @return
+     */
+    public static String upload(String url, String path) {
+        File file = new File(path);
+        try {
+            URL urlObj = new URL(url);
+            // 强转成https安全连接
+            HttpsURLConnection connection = (HttpsURLConnection) urlObj.openConnection();
+            //设置链接的信息
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+
+            //设置请求头信息
+            connection.setRequestProperty("Connection", "Keep-Alive");
+            connection.setRequestProperty("Charset", "utf8");
+
+            //数据的边界
+            String boundary = "-----" + System.currentTimeMillis();
+            connection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+            // 获取输出流
+            OutputStream outputStream = connection.getOutputStream();
+            // 创建文件输入流
+            InputStream inputStream = new FileInputStream(file);
+            // 1.头部信息
+            StringBuilder sb = new StringBuilder();
+            sb.append("--");
+            sb.append(boundary);
+            sb.append("\r\n");
+            sb.append("Content-Disposition:form-data;name=\"media\";filename=\""
+                    + file.getName() + "\"\r\n");
+            sb.append("Content-Type:application/octet-steam\r\n\r\n");
+            outputStream.write(sb.toString().getBytes());
+            // 2.文件内容
+            byte[] b = new byte[1024];
+            int len;
+            while ((len = inputStream.read(b)) != -1) {
+                outputStream.write(b, 0, len);
+            }
+            // 3.尾部信息
+            String foot = "\r\n--" + boundary + "--\r\n";
+            outputStream.write(foot.getBytes());
+            outputStream.flush();
+            outputStream.close();
+
+            //读取数据
+            InputStream is = connection.getInputStream();
+            return getInputStream(is);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 将输入流的内容转成String字符串
+     *
+     * @param stream 输入流
+     * @return 字符串
+     * @throws IOException 可能出现的IO异常
+     */
+    private static String getInputStream(InputStream stream) throws IOException {
+        int len;
+        byte[] b = new byte[1024];
+        StringBuilder sb = new StringBuilder();
+        while ((len = stream.read(b)) != -1) {
+            sb.append(new String(b, 0, len));
+        }
+        return sb.toString();
     }
 }
