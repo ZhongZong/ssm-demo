@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.xstream.XStream;
 import com.zzk.ssmdemo.service.AccessTokenService;
 import com.zzk.ssmdemo.service.MenuService;
+import com.zzk.ssmdemo.service.UserService;
 import com.zzk.ssmdemo.utils.BdSdkUtil;
 import com.zzk.ssmdemo.utils.JuheUtils;
 import com.zzk.ssmdemo.utils.PureNetUtil;
@@ -34,6 +35,9 @@ public class WxTest {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private AccessTokenService accessTokenService;
@@ -178,6 +182,11 @@ public class WxTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testGetUserInfo(){
+        userService.getUserInfo();
     }
 
 }

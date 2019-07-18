@@ -4,7 +4,10 @@ import com.zzk.ssmdemo.dao.UserDao;
 import com.zzk.ssmdemo.entity.User;
 import com.zzk.ssmdemo.enums.ResultEnum;
 import com.zzk.ssmdemo.exception.CommonException;
+import com.zzk.ssmdemo.service.AccessTokenService;
 import com.zzk.ssmdemo.service.UserService;
+import com.zzk.ssmdemo.utils.PureNetUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RedisTemplate redisCacheTemplate;
 
+    @Autowired
+    private AccessTokenService accessTokenService;
+
     private final static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
@@ -47,6 +53,21 @@ public class UserServiceImpl implements UserService {
             return user;
         } catch (Exception e) {
             throw new CommonException(ResultEnum.UNKNOWN_ERROR);
+        }
+    }
+
+    @Override
+    public void getUserInfo() {
+        List<User> userList = userDao.getAllUser();
+        String token = accessTokenService.getAccessToken();
+        logger.info("获取用户信息前得到的token:{}", token);
+        if (!CollectionUtils.isEmpty(userList)) {
+            for (User user : userList) {
+                String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" +
+                        token + "&openid=" + user.getOpenid() + "&lang=zh_CN";
+                String res = PureNetUtil.get(url);
+                logger.info("获取用户:{}的基本信息为:{}", user.getOpenid(), res);
+            }
         }
     }
 

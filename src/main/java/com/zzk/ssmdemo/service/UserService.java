@@ -21,6 +21,11 @@ public interface UserService {
     User getUserById(Integer id);
 
     /**
+     * 获取关注用户的基本信息
+     */
+    void getUserInfo();
+
+    /**
      * 获取所有的关注用户列表
      *
      * @return 关注用户的列表

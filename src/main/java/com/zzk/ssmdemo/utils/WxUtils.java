@@ -94,6 +94,10 @@ public class WxUtils {
             //返回图文消息
             reply = delTuWen(requestMap);
             return reply;
+        } else if ("登录".equals(content) || "登陆".equals(content)) {
+            //返回登录链接
+            reply = delLogin(requestMap);
+            return reply;
         } else {
             //聊天机器人消息
             reply = JuheUtils.chat(content);
@@ -102,12 +106,33 @@ public class WxUtils {
         return beanToXml(tm);
     }
 
+    /**
+     * 用户发送的消息为 图文
+     *
+     * @param requestMap 用户请求消息
+     * @return 图文消息的xml字符串
+     */
     public static String delTuWen(Map<String, String> requestMap) {
         List<Article> articles = Lists.newArrayList();
         Article article = new Article("这是图文消息的标题", "这是图文消息的介绍",
                 "https://mat1.gtimg.com/pingjs/ext2020/qqindex2018/dist/img/qq_logo_2x.png", "https://www.qq.com/");
         articles.add(article);
         BaseMessage message = new NewsMessage(requestMap, articles);
+        return beanToXml(message);
+    }
+
+    /**
+     * 用户发送的消息为 登录 或 登陆
+     *
+     * @param requestMap 用户请求消息
+     * @return 包含登录链接的文本消息xml字符串
+     */
+    public static String delLogin(Map<String, String> requestMap) {
+        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + WeiXin.getAppid()
+                + "&redirect_uri=http://situ.utools.club/weixin/login/getuserinfo"
+                + "&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+        BaseMessage message = new TextMessage(requestMap,
+                "点击<a href=\"" + url + "\">这里</a>登录");
         return beanToXml(message);
     }
 
@@ -223,8 +248,6 @@ public class WxUtils {
                     sb.append("\n");
                 }
             }
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
